@@ -2,51 +2,44 @@
 using Metrc.TaskManagement.Application.Contracts.Persistence;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Metrc.TaskManagement.Persistence.Services
+namespace Metrc.TaskManagement.Persistence.Services;
+
+public class DbService : IDbService
 {
-    public class DbService : IDbService
+    private readonly IDbConnection _db;
+
+    public DbService(IConfiguration configuration)
     {
-        private readonly IDbConnection _db;
+        _db = new NpgsqlConnection(configuration.GetConnectionString("TaskManagementdb"));
+    }
 
-        public DbService(IConfiguration configuration)
-        {
-            _db = new NpgsqlConnection(configuration.GetConnectionString("Employeedb"));
-        }
+    public async Task<T> GetAsync<T>(string command, object parms)
+    {
+        T result;
 
-        public async Task<T> GetAsync<T>(string command, object parms)
-        {
-            T result;
+        result = (await _db.QueryAsync<T>(command, parms).ConfigureAwait(false)).FirstOrDefault();
 
-            result = (await _db.QueryAsync<T>(command, parms).ConfigureAwait(false)).FirstOrDefault();
+        return result;
 
-            return result;
+    }
 
-        }
+    public async Task<List<T>> GetAll<T>(string command, object parms)
+    {
+        List<T> result = new List<T>();
 
-        public async Task<List<T>> GetAll<T>(string command, object parms)
-        {
+        result = (await _db.QueryAsync<T>(command, parms)).ToList();
 
-            List<T> result = new List<T>();
+        return result;
+    }
 
-            result = (await _db.QueryAsync<T>(command, parms)).ToList();
+    public async Task<int> EditData(string command, object parms)
+    {
+        int result;
 
-            return result;
-        }
+        result = await _db.ExecuteAsync(command, parms);
 
-        public async Task<int> EditData(string command, object parms)
-        {
-            int result;
-
-            result = await _db.ExecuteAsync(command, parms);
-
-            return result;
-        }
+        return result;
     }
 }

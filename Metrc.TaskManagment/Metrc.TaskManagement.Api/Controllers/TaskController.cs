@@ -1,4 +1,5 @@
 ﻿using Metrc.TaskManagement.Application.Contracts.Persistence;
+using Metrc.TaskManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Metrc.TaskManagement.Api.Controllers;
@@ -7,17 +8,17 @@ namespace Metrc.TaskManagement.Api.Controllers;
 [ApiController]
 public class TaskController : ControllerBase
 {
-    private readonly ITaskService _taskService;
+    private readonly IWorkTaskService _workTaskService;
 
-    public TaskController(ITaskService taskService)
+    public TaskController(IWorkTaskService taskService)
     {
-        _taskService = taskService;
+        _workTaskService = taskService;
     }
 
-    [HttpGet]
+    [HttpGet("get-all")]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _taskService.GetAll();
+        var result = await _workTaskService.GetAll();
 
         return Ok(result);
     }
@@ -25,23 +26,23 @@ public class TaskController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetTask(int id)
     {
-        var result = await _taskService.GetTask(id);
+        var result = await _workTaskService.GetWorkTask(id);
 
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTask([FromBody] Task task)
+    public async Task<IActionResult> AddTask([FromBody] WorkTask workTask)
     {
-        var result = await _taskService.CreateTask(task);
+        var result = await _workTaskService.CreateTask(workTask);
 
         return Ok(result);
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateTask([FromBody] Task task)
+    public async Task<IActionResult> UpdateTask([FromBody] WorkTask workTask)
     {
-        var result = await _taskService.UpdateTask(task);
+        var result = await _workTaskService.UpdateWorkTask(workTask);
 
         return Ok(result);
     }
@@ -49,7 +50,7 @@ public class TaskController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteTask(int id)
     {
-        var result = await _taskService.DeleteTask(id);
+        var result = await _workTaskService.DeleteWorkTask(id);
 
         return Ok(result);
     }
