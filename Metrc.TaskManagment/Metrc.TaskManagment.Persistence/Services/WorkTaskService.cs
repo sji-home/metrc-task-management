@@ -23,7 +23,7 @@ public class WorkTaskService : IWorkTaskService
 
     public async Task<List<WorkTask>> GetAll()
     {
-        var tasks = await _dbService.GetAll<WorkTask>("SELECT id, status_id AS Status, assigned_user_id as AssignedUserId, description FROM public.work_task", new { });
+        var tasks = await _dbService.GetList<WorkTask>("SELECT id, status_id AS Status, assigned_user_id as AssignedUserId, description FROM public.work_task", new { });
         return tasks;
     }
 

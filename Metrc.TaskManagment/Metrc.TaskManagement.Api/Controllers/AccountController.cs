@@ -26,9 +26,9 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] CreateUserDTO createUserDTO)
     {
-        var count = await _userService.UserByEmailAsync(createUserDTO.Email);
+        var userDTO = await _userService.UserByEmailAsync(createUserDTO.Email);
 
-        if (count == 0) return BadRequest("User with email already exists");
+        if (userDTO is not not null) return BadRequest("User with email already exists");
 
         var appUser = new AppUser
         {

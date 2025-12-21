@@ -16,4 +16,6 @@ public class AppUser
 
     [MaxLength(255)]
     public required string Password { get; set; }
+
+    public IEnumerable<AppUserRole>? AppUserRoles { get; set; }
 }

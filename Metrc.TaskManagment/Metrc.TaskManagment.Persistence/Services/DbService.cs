@@ -25,7 +25,7 @@ public class DbService : IDbService
 
     }
 
-    public async Task<List<T>> GetAll<T>(string command, object parms)
+    public async Task<List<T>> GetList<T>(string command, object parms)
     {
         List<T> result = new List<T>();
 
