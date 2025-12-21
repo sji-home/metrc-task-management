@@ -1,6 +1,8 @@
-﻿using Metrc.TaskManagement.Application.Contracts.Persistence;
+﻿using Metrc.TaskManagement.Application.Common;
+using Metrc.TaskManagement.Application.Contracts.Persistence;
 using Metrc.TaskManagement.Domain.DTOs;
 using Metrc.TaskManagement.Domain.Entities;
+using Metrc.TaskManagment.Domain.Enums;
 
 namespace Metrc.TaskManagement.Persistence.Services;
 
@@ -67,5 +69,41 @@ public class UserService : IUserService
         }
 
         return userDTO;
+    }
+
+    public async Task<Result> AddRolesAsync(int userId, IReadOnlyCollection<RoleEnum> roles)
+    {
+        if (userId <= 0)
+        {
+            return await Task.FromResult(Result.Fail("The userId must be greater than zero."));
+        }
+
+        if (roles?.Count == 0)
+        {
+            return await Task.FromResult(Result.Fail("There were no roles passed in."));
+        }
+
+        const string sql = """
+            INSERT INTO app_user_role (app_user_id, role_id)
+            VALUES (@UserId, @RoleId)
+            ON CONFLICT DO NOTHING;
+        """;
+
+        var parameters = roles!
+            .Where(r => r != RoleEnum.None)
+            .Select(r => new
+            {
+                UserId = userId,
+                RoleId = (int)r
+            });
+
+        var rows = await _dbService.EditData(sql, parameters);
+
+        if (rows == 0)
+        {
+            return Result.Fail($"No roles were added for UserId = {userId}.");
+        }
+
+        return Result.Ok();
     }
 }
