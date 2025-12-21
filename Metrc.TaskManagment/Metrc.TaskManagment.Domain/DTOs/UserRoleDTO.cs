@@ -2,6 +2,6 @@
 
 public class UserRoleDTO
 {
-    public required RoleDTO Role { get; set; }
+    public required AppRoleDTO Role { get; set; }
     public required int AppUserId { get; set; }
 }

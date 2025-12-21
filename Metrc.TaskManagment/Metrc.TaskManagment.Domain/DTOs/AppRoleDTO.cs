@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Metrc.TaskManagement.Domain.Entities;
+namespace Metrc.TaskManagement.Domain.DTOs;
 
-public class Role
+public class AppRoleDTO
 {
     [MaxLength(100)]
     public required string Name { get; set; }

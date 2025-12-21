@@ -59,7 +59,7 @@ public class UserService : IUserService
             .Select(r => new UserRoleDTO
             {
                 AppUserId = r.AppUserId,
-                Role = new RoleDTO
+                Role = new AppRoleDTO
                 {
                     Name = r.Role.Name
                 }
