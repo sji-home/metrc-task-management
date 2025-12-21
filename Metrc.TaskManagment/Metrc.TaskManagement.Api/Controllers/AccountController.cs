@@ -1,5 +1,6 @@
 ﻿using Metrc.TaskManagement.Application.Contracts.Infrastructure;
 using Metrc.TaskManagement.Application.Contracts.Persistence;
+using Metrc.TaskManagement.Application.DTOs.Authentication;
 using Metrc.TaskManagement.Domain.DTOs;
 using Metrc.TaskManagement.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -13,22 +14,27 @@ public class AccountController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IPasswordHasherService _passwordHasherService;
+    private readonly IAuthenticationService _authenticationService;
 
-    public AccountController(IUserService userService, IPasswordHasherService passwordHasherService)
+    public AccountController(
+        IUserService userService, 
+        IPasswordHasherService passwordHasherService,
+        IAuthenticationService authenticationService)
     {
         _userService = userService;
-        _passwordHasherService = passwordHasherService; 
+        _passwordHasherService = passwordHasherService;
+        _authenticationService = authenticationService;
     }
 
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Register([FromBody] CreateUserDTO createUserDTO)
     {
-        var userDTO = await _userService.UserByEmailAsync(createUserDTO.Email);
+        var userDTO = await _userService.UserByLoginIdAsync(createUserDTO.UserName);
 
-        if (userDTO is not not null) return BadRequest("User with email already exists");
+        if (userDTO is not null) return Unauthorized("Invalid credentials.");
 
         var appUser = new AppUser
         {
@@ -42,5 +48,22 @@ public class AccountController : ControllerBase
         return Ok(userId);
     }
 
+    [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<TokenResponse>> Login(
+        LoginDTO request,
+        CancellationToken cancellationToken = default)
+    {
+        var tokenResponse = await _authenticationService.CreateAccessTokenAsync(
+            request.Email,
+            request.Password, 
+            cancellationToken);
+
+        if (tokenResponse is null)
+            return Unauthorized("Invalid credentials.");
+
+        return Ok(tokenResponse);
+    }
 
 }

@@ -22,15 +22,20 @@ public class UserService : IUserService
         return id;
     }
 
-    public async Task<UserDTO> UserByEmailAsync(string email)
+    public async Task<UserDTO?> UserByLoginIdAsync(string loginId)
     {
         var sql1 = @"select id, username, email, password 
                     from public.app_user 
-                    where email=@email";
+                    where username=@loginId";
 
-        var user = await _dbService.GetAsync<AppUser>(sql1, new { email });
+        var user = await _dbService.GetAsync<AppUser>(sql1, new { loginId });
+
+        if (user is null)
+            return null;
+
         var userDTO = new UserDTO
         {
+            Id = user.Id,
             UserName = user.UserName,
             Email = user.Email,
             Password = user.Password
@@ -40,10 +45,10 @@ public class UserService : IUserService
                      from public.app_user_role ur
                      join public.role r
                      on ur.role_id = r.id
-                     where ur.app_user_id=@user_id";                     
+                     where ur.app_user_id=@Id";                     
 
 
-        var userRoles = await _dbService.GetList<AppUserRole>(sql2, new { user.Id });
+        var userRoles = await _dbService.GetList<AppUserRole>(sql2, new { userDTO.Id });
 
         var userRoleDTOs = userRoles
             .Select(r => new UserRoleDTO

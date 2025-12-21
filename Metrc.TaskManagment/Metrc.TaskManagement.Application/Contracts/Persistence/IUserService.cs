@@ -5,7 +5,7 @@ namespace Metrc.TaskManagement.Application.Contracts.Persistence;
 
 public interface IUserService
 {
-    Task<UserDTO> UserByEmailAsync(string email);
+    Task<UserDTO?> UserByLoginIdAsync(string loginId);
 
     Task<int> AddAsync(AppUser appUser);
 }

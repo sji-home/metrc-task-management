@@ -4,6 +4,8 @@ namespace Metrc.TaskManagement.Domain.DTOs;
 
 public class UserDTO
 {
+    public required int Id { get; set; }
+
     [MaxLength(255)]
     public required string UserName { get; set; }
 

@@ -1,5 +1,6 @@
 using Metrc.TaskManagement.Application.Contracts.Infrastructure;
 using Metrc.TaskManagement.Application.Contracts.Persistence;
+using Metrc.TaskManagement.Infrastructure.Authentication;
 using Metrc.TaskManagement.Infrastructure.Services;
 using Metrc.TaskManagement.Persistence.Services;
 using Microsoft.OpenApi.Models;
@@ -10,7 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IDbService, DbService>();
 builder.Services.AddScoped<IWorkTaskService, WorkTaskService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
+
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenFactory, TokenFactory>();
+
+builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
