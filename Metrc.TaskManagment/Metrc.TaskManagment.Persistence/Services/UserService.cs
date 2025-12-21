@@ -50,17 +50,21 @@ public class UserService : IUserService
 
         var userRoles = await _dbService.GetList<AppUserRole>(sql2, new { userDTO.Id });
 
-        var userRoleDTOs = userRoles
+        if (userRoles?.Count > 0)
+        {
+            var userRoleDTOs = userRoles
+
             .Select(r => new UserRoleDTO
             {
                 AppUserId = r.AppUserId,
                 Role = new RoleDTO
                 {
-                  Name = r.Role.Name
+                    Name = r.Role.Name
                 }
             }).ToList();
 
-        userDTO.AppUserRoles.AddRange(userRoleDTOs);
+            userDTO.AppUserRoles.AddRange(userRoleDTOs);
+        }
 
         return userDTO;
     }

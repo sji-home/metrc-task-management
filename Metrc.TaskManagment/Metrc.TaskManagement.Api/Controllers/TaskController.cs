@@ -1,11 +1,13 @@
 ﻿using Metrc.TaskManagement.Application.Contracts.Persistence;
 using Metrc.TaskManagement.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Metrc.TaskManagement.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TaskController : ControllerBase
 {
     private readonly IWorkTaskService _workTaskService;
