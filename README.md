@@ -1,0 +1,4 @@
+- This project uses:
+  - .NET 8
+  - postgresql backup from PGAdmin
+  - Dapper mini orm
