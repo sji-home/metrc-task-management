@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Metrc.TaskManagement.Domain\Metrc.TaskManagement.Domain.csproj" />
-    <ProjectReference Include="..\Metrc.TaskManagment.Domain\Metrc.TaskManagement.Domain.csproj" />
   </ItemGroup>
 
 </Project>

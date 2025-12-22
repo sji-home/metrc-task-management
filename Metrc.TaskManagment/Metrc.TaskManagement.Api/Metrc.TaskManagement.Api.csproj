@@ -15,8 +15,6 @@
     <ProjectReference Include="..\Metrc.TaskManagement.Application\Metrc.TaskManagement.Application.csproj" />
     <ProjectReference Include="..\Metrc.TaskManagement.Infrastructure\Metrc.TaskManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\Metrc.TaskManagement.Persistence\Metrc.TaskManagement.Persistence.csproj" />
-    <ProjectReference Include="..\Metrc.TaskManagment.Infrastructure\Metrc.TaskManagement.Infrastructure.csproj" />
-    <ProjectReference Include="..\Metrc.TaskManagment.Persistence\Metrc.TaskManagement.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
