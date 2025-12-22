@@ -5,6 +5,10 @@ namespace Metrc.TaskManagement.Domain.DTOs;
 
 public class WorkTaskResponseDTO
 {
+    public WorkTaskResponseDTO()
+    {
+    }
+
     public int Id { get; set; }
 
     public required WorkTaskStatusEnum Status { get; set; }
