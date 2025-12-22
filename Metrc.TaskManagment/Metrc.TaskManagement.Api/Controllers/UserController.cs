@@ -20,6 +20,8 @@ public class UserController : ControllerBase
     [HttpPost("{userId}/roles")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> AddRolesToUser(int userId, [FromBody] IReadOnlyCollection<RoleEnum> roles)
     {
         var result = await _userService.AddRolesAsync(userId, roles);

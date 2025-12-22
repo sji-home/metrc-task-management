@@ -7,7 +7,7 @@ namespace Metrc.TaskManagement.Application.Contracts.Persistence;
 
 public interface IUserService
 {
-    Task<UserDTO?> UserByLoginIdAsync(string loginId);
+    Task<UserDTO?> UserByLoginIdAsync(string loginId, CancellationToken cancellationToken = default);
 
     Task<int> AddAsync(AppUser appUser);
 

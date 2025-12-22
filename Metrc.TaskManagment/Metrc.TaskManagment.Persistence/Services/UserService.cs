@@ -24,7 +24,7 @@ public class UserService : IUserService
         return id;
     }
 
-    public async Task<UserDTO?> UserByLoginIdAsync(string loginId)
+    public async Task<UserDTO?> UserByLoginIdAsync(string loginId, CancellationToken cancellationToken = default)
     {
         var sql1 = @"select id, username, email, password 
                     from public.app_user 

@@ -4,9 +4,9 @@ namespace Metrc.TaskManagement.Application.Contracts.Persistence;
 
 public interface IWorkTaskService
 {
-    Task<int> CreateTask(WorkTask workTask);
-    Task<List<WorkTask>> GetAll();
-    Task<WorkTask> GetWorkTask(int id);
-    Task<bool> UpdateWorkTask(WorkTask workTask);
-    Task<bool> DeleteWorkTask(int id);
+    Task<int> CreateTaskAsync(WorkTask workTask, CancellationToken cancellationToken = default);
+    Task<List<WorkTask>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<WorkTask?> GetWorkTaskAsync(int id, CancellationToken cancellationToken = default);
+    Task<bool> UpdateWorkTaskAsync(WorkTask workTask, CancellationToken cancellationToken = default);
+    Task<bool> DeleteWorkTaskAsync(int id, CancellationToken cancellationToken = default);
 }

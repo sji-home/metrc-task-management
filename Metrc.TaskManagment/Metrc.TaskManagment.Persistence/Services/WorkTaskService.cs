@@ -12,40 +12,59 @@ public class WorkTaskService : IWorkTaskService
         _dbService = dbService;
     }
 
-    public async Task<int> CreateTask(WorkTask workTask)
+    public async Task<int> CreateTaskAsync(
+        WorkTask workTask, 
+        CancellationToken cancellationToken = default)
     {
         var sql = @"INSERT INTO public.work_task (status_id, assigned_user_id, title, description) 
                     VALUES (@Status, @AssignedUserId, @Title, @Description) RETURNING id";
 
-        var id = await _dbService.GetAsync<int>(sql, workTask);
+        var id = await _dbService.GetAsync<int>(sql, workTask, cancellationToken);
         return id;
     }
 
-    public async Task<List<WorkTask>> GetAll()
+    public async Task<List<WorkTask>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var tasks = await _dbService.GetList<WorkTask>("SELECT id, status_id AS Status, assigned_user_id as AssignedUserId, title, description FROM public.work_task", new { });
         return tasks;
     }
 
-    public async Task<WorkTask> GetWorkTask(int id)
+    public async Task<WorkTask?> GetWorkTaskAsync(
+        int id, 
+        CancellationToken cancellationToken = default)
     {
-        var task = await _dbService.GetAsync<WorkTask>("SELECT id, status_id AS Status, assigned_user_id as AssignedUserId, title, description FROM public.work_task where id=@id", new { id });
-        return task;
+        var sql =
+            """
+            SELECT id,
+                    status_id AS Status,
+                    assigned_user_id AS AssignedUserId,
+                    title,
+                    description
+            FROM public.work_task
+            WHERE id = @id
+            """;
+
+        return await _dbService.GetAsync<WorkTask>(sql, new { id }, cancellationToken);
     }
 
-    public async Task<bool> UpdateWorkTask(WorkTask task)
+    public async Task<bool> UpdateWorkTaskAsync(
+        WorkTask task, 
+        CancellationToken cancellationToken = default)
     {
         var rowsAffected =
             await _dbService.EditData(
                 "Update public.work_task SET status_id=@Status, assigned_user_id=@AssignedUserId, title=@Title, description=@Description WHERE id=@Id",
-                task);
+                task,
+                cancellationToken);
 
         return rowsAffected > 0;
     }
 
-    public async Task<bool> DeleteWorkTask(int id)
+    public async Task<bool> DeleteWorkTaskAsync(
+        int id, 
+        CancellationToken cancellationToken = default)
     {
-        var rowsAffected = await _dbService.EditData("DELETE FROM public.work_task WHERE id=@Id", new { id });
+        var rowsAffected = await _dbService.EditData("DELETE FROM public.work_task WHERE id=@Id", new { id }, cancellationToken);
         return rowsAffected > 0;
     }
 }

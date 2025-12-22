@@ -15,30 +15,56 @@ public class DbService : IDbService
         _db = new NpgsqlConnection(configuration.GetConnectionString("TaskManagementdb"));
     }
 
-    public async Task<T> GetAsync<T>(string command, object parms)
+    public async Task<T?> GetAsync<T>(
+        string command, 
+        object? parms, 
+        CancellationToken cancellationToken = default)
     {
-        T result;
+        var commandDefinition = new CommandDefinition(
+                commandText: command,
+                parameters: parms,
+                cancellationToken: cancellationToken
+            );
 
-        result = (await _db.QueryAsync<T>(command, parms).ConfigureAwait(false)).FirstOrDefault();
+        var result = (await _db
+            .QueryAsync<T>(commandDefinition)
+            .ConfigureAwait(false))
+            .FirstOrDefault();
 
         return result;
-
     }
 
-    public async Task<List<T>> GetList<T>(string command, object parms)
+    public async Task<List<T>> GetList<T>(
+        string command, 
+        object? parms,
+        CancellationToken cancellationToken = default)
     {
-        List<T> result = new List<T>();
+        var commandDefinition = new CommandDefinition(
+            commandText: command,
+            parameters: parms,
+            cancellationToken: cancellationToken
+        );
 
-        result = (await _db.QueryAsync<T>(command, parms)).ToList();
+        var result = (await _db
+            .QueryAsync<T>(commandDefinition)
+            .ConfigureAwait(false))
+            .ToList();
 
         return result;
     }
 
-    public async Task<int> EditData(string command, object parms)
+    public async Task<int> EditData(
+        string command, 
+        object? parms,
+        CancellationToken cancellationToken = default)
     {
-        int result;
+        var commandDefinition = new CommandDefinition(
+            commandText: command,
+            parameters: parms,
+            cancellationToken: cancellationToken
+        );
 
-        result = await _db.ExecuteAsync(command, parms);
+        var result = await _db.ExecuteAsync(commandDefinition).ConfigureAwait(false);
 
         return result;
     }
