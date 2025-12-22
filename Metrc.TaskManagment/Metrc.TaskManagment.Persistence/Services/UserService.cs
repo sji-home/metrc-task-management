@@ -43,29 +43,28 @@ public class UserService : IUserService
             Password = user.Password
         };
 
-        var sql2 = @"select * 
-                     from public.app_user_role ur
-                     join public.role r
-                     on ur.role_id = r.id
-                     where ur.app_user_id=@Id";                     
-
+        var sql2 = @"
+            SELECT 
+                ur.app_user_id AS AppUserId,
+                r.role_name   AS RoleName
+            FROM public.app_user_role ur
+            JOIN public.app_role r
+                ON ur.app_role_id = r.id
+            WHERE ur.app_user_id = @Id;";
 
         var userRoles = await _dbService.GetList<AppUserRole>(sql2, new { userDTO.Id });
 
         if (userRoles?.Count > 0)
         {
-            var userRoleDTOs = userRoles
-
-            .Select(r => new UserRoleDTO
-            {
-                AppUserId = r.AppUserId,
-                Role = new AppRoleDTO
+            var appUserRoleDTOs = userRoles
+                .Select(r => new AppUserRoleDTO
                 {
-                    Name = r.Role.Name
-                }
-            }).ToList();
+                    AppUserId = r.AppUserId,
+                    RoleName = r.RoleName
+                })
+                .ToList();
 
-            userDTO.AppUserRoles.AddRange(userRoleDTOs);
+            userDTO.AppUserRoles.AddRange(appUserRoleDTOs);
         }
 
         return userDTO;
@@ -84,7 +83,7 @@ public class UserService : IUserService
         }
 
         const string sql = """
-            INSERT INTO app_user_role (app_user_id, role_id)
+            INSERT INTO app_user_role (app_user_id, app_role_id)
             VALUES (@UserId, @RoleId)
             ON CONFLICT DO NOTHING;
         """;

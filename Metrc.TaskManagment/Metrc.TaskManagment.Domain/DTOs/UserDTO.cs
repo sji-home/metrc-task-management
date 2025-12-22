@@ -15,5 +15,5 @@ public class UserDTO
     [MaxLength(255)]
     public required string Password { get; set; }
 
-    public List<UserRoleDTO> AppUserRoles { get; set; } = [];
+    public List<AppUserRoleDTO> AppUserRoles { get; set; } = [];
 }

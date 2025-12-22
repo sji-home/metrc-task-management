@@ -57,7 +57,7 @@ public class TokenFactory : ITokenFactory
 
         foreach (var userRole in user.AppUserRoles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
+            claims.Add(new Claim(ClaimTypes.Role, userRole.RoleName));
         }
 
         return claims;
