@@ -22,9 +22,15 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> AddRolesToUser(int userId, [FromBody] IReadOnlyCollection<RoleEnum> roles)
+    public async Task<IActionResult> AddRolesToUser(
+        int userId, 
+        [FromBody] IReadOnlyCollection<RoleEnum> roles, 
+        CancellationToken cancellationToken = default)
     {
-        var result = await _userService.AddRolesAsync(userId, roles);
+        if (roles == null || !roles.Any())
+            return BadRequest(new { Message = "At least one role must be provided." });
+
+        var result = await _userService.AddRolesAsync(userId, roles, cancellationToken);
 
         if (result is not { IsSuccess: true }) 
             return BadRequest(result?.Error);

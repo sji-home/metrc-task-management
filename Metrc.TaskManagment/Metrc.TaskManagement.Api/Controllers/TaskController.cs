@@ -2,7 +2,6 @@
 using Metrc.TaskManagement.Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Metrc.TaskManagement.Api.Controllers;
 
@@ -18,12 +17,12 @@ public class TaskController : ControllerBase
         _workTaskService = taskService;
     }
 
-    [HttpGet("get-all")]
-    [ProducesResponseType(typeof(WorkTaskResponseDTO), StatusCodes.Status200OK)]
+    [HttpGet()]
+    [ProducesResponseType(typeof(IEnumerable<WorkTaskResponseDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Get(CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.GetAllAsync();
+        var result = await _workTaskService.GetAllAsync(cancellationToken);
 
         return Ok(result);
     }
@@ -31,11 +30,11 @@ public class TaskController : ControllerBase
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(WorkTaskResponseDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetTask(
+    public async Task<IActionResult> Get(
         int id, 
         CancellationToken cancellationToken = default)
     {
-        var task = await _workTaskService.GetWorkTaskAsync(id);
+        var task = await _workTaskService.GetWorkTaskAsync(id, cancellationToken);
 
         return task is not null
             ? Ok(task)
@@ -43,32 +42,38 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTask(
+    [Consumes("application/json")]
+    public async Task<IActionResult> Add(
         [FromBody] WorkTaskDTO workTaskDTO, 
         CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.CreateTaskAsync(workTaskDTO);
+        var result = await _workTaskService.CreateTaskAsync(workTaskDTO, cancellationToken);
 
         return Ok(result);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateTask(
+    [HttpPut("{id:int}")]
+    [Consumes("application/json")]
+    public async Task<IActionResult> Update(
+        int id,
         [FromBody] UpdateWorkTaskDTO updateWorkTaskDTO, 
         CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.UpdateWorkTaskAsync(updateWorkTaskDTO);
+        if (id != updateWorkTaskDTO.Id)
+            return BadRequest(new { Message = "Id in route does not match Id in body." });
+
+        var result = await _workTaskService.UpdateWorkTaskAsync(updateWorkTaskDTO, cancellationToken);
 
         return Ok(result);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteTask(
+    public async Task<IActionResult> Delete(
         int id, 
         CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.DeleteWorkTaskAsync(id);
+        var deleted = await _workTaskService.DeleteWorkTaskAsync(id, cancellationToken);
 
-        return Ok(result);
+        return deleted ? NoContent() : NotFound(new { Message = $"WorkTask with Id {id} not found." });
     }
 }
