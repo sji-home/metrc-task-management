@@ -1,5 +1,4 @@
 ﻿using Metrc.TaskManagement.Domain.DTOs;
-using Metrc.TaskManagement.Domain.Entities;
 
 namespace Metrc.TaskManagement.Application.Contracts.Persistence;
 

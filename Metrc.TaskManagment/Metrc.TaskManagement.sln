@@ -13,13 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1916F2AD-9C4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{861BAA91-B283-4D10-9618-948256ADE39C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Domain", "Metrc.TaskManagment.Domain\Metrc.TaskManagement.Domain.csproj", "{DA86015F-036D-4527-AD47-A7AC9FDE9366}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Domain", "Metrc.TaskManagement.Domain\Metrc.TaskManagement.Domain.csproj", "{DA86015F-036D-4527-AD47-A7AC9FDE9366}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Application", "Metrc.TaskManagement.Application\Metrc.TaskManagement.Application.csproj", "{4F3CE0F5-0897-4E06-966D-3BC194F8AAAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Infrastructure", "Metrc.TaskManagment.Infrastructure\Metrc.TaskManagement.Infrastructure.csproj", "{C27007C6-BD7E-4352-9E15-D8A00AB311BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Infrastructure", "Metrc.TaskManagement.Infrastructure\Metrc.TaskManagement.Infrastructure.csproj", "{C27007C6-BD7E-4352-9E15-D8A00AB311BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Persistence", "Metrc.TaskManagment.Persistence\Metrc.TaskManagement.Persistence.csproj", "{C45FE0CE-9049-4672-90C5-217693A3CF21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Persistence", "Metrc.TaskManagement.Persistence\Metrc.TaskManagement.Persistence.csproj", "{C45FE0CE-9049-4672-90C5-217693A3CF21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metrc.TaskManagement.Api", "Metrc.TaskManagement.Api\Metrc.TaskManagement.Api.csproj", "{6D605587-C5FF-4E55-B2C6-FD1642D68A8F}"
 EndProject

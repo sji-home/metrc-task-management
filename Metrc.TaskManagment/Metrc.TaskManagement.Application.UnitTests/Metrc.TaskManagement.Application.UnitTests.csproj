@@ -1,14 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
+  
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="FluentAssertions" Version="8.8.0" />
@@ -19,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Metrc.TaskManagement.Api\Metrc.TaskManagement.Api.csproj" />
     <ProjectReference Include="..\Metrc.TaskManagement.Application\Metrc.TaskManagement.Application.csproj" />
+    <ProjectReference Include="..\Metrc.TaskManagement.Domain\Metrc.TaskManagement.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
