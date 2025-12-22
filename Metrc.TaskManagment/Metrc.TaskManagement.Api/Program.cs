@@ -6,6 +6,7 @@ using Metrc.TaskManagement.Persistence.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -74,6 +75,14 @@ builder.Services.AddSwaggerGen(options =>
             new string[] {}
         }
     });
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+
+    if (File.Exists(xmlPath))
+    {
+        options.IncludeXmlComments(xmlPath);
+    }
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

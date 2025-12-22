@@ -2,6 +2,7 @@
 using Metrc.TaskManagement.Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Metrc.TaskManagement.Api.Controllers;
 
@@ -18,6 +19,8 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("get-all")]
+    [ProducesResponseType(typeof(WorkTaskResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
     {
         var result = await _workTaskService.GetAllAsync();
@@ -26,13 +29,17 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(WorkTaskResponseDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTask(
         int id, 
         CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.GetWorkTaskAsync(id);
+        var task = await _workTaskService.GetWorkTaskAsync(id);
 
-        return Ok(result);
+        return task is not null
+            ? Ok(task)
+            : NotFound(new { Message = $"WorkTask with Id {id} was not found." });
     }
 
     [HttpPost]
