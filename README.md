@@ -1,4 +1,6 @@
 - This project uses:
   - .NET 8
+  - Web API REST with controllers and no views
+  - Swagger with ability to add JWT token
   - postgresql backup from PGAdmin
   - Dapper mini orm
