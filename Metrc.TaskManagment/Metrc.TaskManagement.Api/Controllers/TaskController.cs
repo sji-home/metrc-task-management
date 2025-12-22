@@ -1,5 +1,5 @@
 ﻿using Metrc.TaskManagement.Application.Contracts.Persistence;
-using Metrc.TaskManagement.Domain.Entities;
+using Metrc.TaskManagement.Domain.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,20 +37,20 @@ public class TaskController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddTask(
-        [FromBody] WorkTask workTask, 
+        [FromBody] WorkTaskDTO workTaskDTO, 
         CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.CreateTaskAsync(workTask);
+        var result = await _workTaskService.CreateTaskAsync(workTaskDTO);
 
         return Ok(result);
     }
 
     [HttpPut]
     public async Task<IActionResult> UpdateTask(
-        [FromBody] WorkTask workTask, 
+        [FromBody] UpdateWorkTaskDTO updateWorkTaskDTO, 
         CancellationToken cancellationToken = default)
     {
-        var result = await _workTaskService.UpdateWorkTaskAsync(workTask);
+        var result = await _workTaskService.UpdateWorkTaskAsync(updateWorkTaskDTO);
 
         return Ok(result);
     }

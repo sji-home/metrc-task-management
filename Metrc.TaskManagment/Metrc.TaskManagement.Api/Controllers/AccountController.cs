@@ -56,7 +56,7 @@ public class AccountController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var tokenResponse = await _authenticationService.CreateAccessTokenAsync(
-            request.Email,
+            request.UserName,
             request.Password, 
             cancellationToken);
 

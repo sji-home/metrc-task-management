@@ -1,4 +1,6 @@
 ﻿using Metrc.TaskManagement.Application.Contracts.Persistence;
+using Metrc.TaskManagement.Application.Profiles.Mappings;
+using Metrc.TaskManagement.Domain.DTOs;
 using Metrc.TaskManagement.Domain.Entities;
 
 namespace Metrc.TaskManagement.Persistence.Services;
@@ -13,17 +15,19 @@ public class WorkTaskService : IWorkTaskService
     }
 
     public async Task<int> CreateTaskAsync(
-        WorkTask workTask, 
+        WorkTaskDTO workTaskDTO, 
         CancellationToken cancellationToken = default)
     {
         var sql = @"INSERT INTO public.work_task (status_id, assigned_user_id, title, description) 
                     VALUES (@Status, @AssignedUserId, @Title, @Description) RETURNING id";
 
+        var workTask = DTOToEntityMapper.ToEntity(workTaskDTO);
+
         var id = await _dbService.GetAsync<int>(sql, workTask, cancellationToken);
         return id;
     }
 
-    public async Task<List<WorkTask>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<List<WorkTaskResponseDTO>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var sql =
             """
@@ -31,11 +35,14 @@ public class WorkTaskService : IWorkTaskService
             FROM public.work_task
             """;
 
-        var tasks = await _dbService.GetListAsync<WorkTask>(sql, new { }, cancellationToken);
-        return tasks;
+        var workTasks = await _dbService.GetListAsync<WorkTask>(sql, new { }, cancellationToken);
+
+        var workTasksDTO = EntityToDTOMapper.ToResponseDTO(workTasks);
+
+        return workTasksDTO ?? [];
     }
 
-    public async Task<WorkTask?> GetWorkTaskAsync(
+    public async Task<WorkTaskResponseDTO?> GetWorkTaskAsync(
         int id, 
         CancellationToken cancellationToken = default)
     {
@@ -50,14 +57,18 @@ public class WorkTaskService : IWorkTaskService
             WHERE id = @id
             """;
 
-        return await _dbService.GetAsync<WorkTask>(
-            sql, 
-            new { id }, 
-            cancellationToken);
+        var workTask = await _dbService.GetAsync<WorkTask>(sql, new { id }, cancellationToken);
+
+        WorkTaskResponseDTO? workTaskResponseDTO = null;
+
+        if (workTask is not null)
+            workTaskResponseDTO = EntityToDTOMapper.ToResponseDTO(workTask);
+
+        return workTaskResponseDTO;
     }
 
     public async Task<bool> UpdateWorkTaskAsync(
-        WorkTask task, 
+        UpdateWorkTaskDTO updateWorkTaskDTO, 
         CancellationToken cancellationToken = default)
     {
         var sql =
@@ -67,10 +78,12 @@ public class WorkTaskService : IWorkTaskService
            WHERE id=@Id
            """;
 
+        var workTask = DTOToEntityMapper.ToEntity(updateWorkTaskDTO);
+
         var rowsAffected =
             await _dbService.EditDataAsync(
                 sql,
-                task,
+                workTask,
                 cancellationToken);
 
         return rowsAffected > 0;
