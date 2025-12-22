@@ -6,12 +6,12 @@ public interface IDbService
         string command,
         object? parms,
         CancellationToken cancellationToken = default); 
-    Task<List<T>> GetList<T>(
+    Task<List<T>> GetListAsync<T>(
         string command, 
         object? parms,
         CancellationToken cancellationToken = default);
 
-    Task<int> EditData(
+    Task<int> EditDataAsync(
         string command, 
         object? parms,
         CancellationToken cancellationToken = default);

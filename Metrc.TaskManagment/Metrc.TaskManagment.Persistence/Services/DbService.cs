@@ -34,7 +34,7 @@ public class DbService : IDbService
         return result;
     }
 
-    public async Task<List<T>> GetList<T>(
+    public async Task<List<T>> GetListAsync<T>(
         string command, 
         object? parms,
         CancellationToken cancellationToken = default)
@@ -53,7 +53,7 @@ public class DbService : IDbService
         return result;
     }
 
-    public async Task<int> EditData(
+    public async Task<int> EditDataAsync(
         string command, 
         object? parms,
         CancellationToken cancellationToken = default)

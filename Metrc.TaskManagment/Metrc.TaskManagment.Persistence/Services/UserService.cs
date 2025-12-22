@@ -15,12 +15,12 @@ public class UserService : IUserService
         _dbService = dbService;
     }
 
-    public async Task<int> AddAsync(AppUser appUser)
+    public async Task<int> AddAsync(AppUser appUser, CancellationToken cancellationToken = default)
     {
         var sql = @"INSERT INTO public.app_user (username, email, password) 
                     VALUES (@UserName, @Email, @Password) RETURNING id";
 
-        var id = await _dbService.GetAsync<int>(sql, appUser);
+        var id = await _dbService.GetAsync<int>(sql, appUser, cancellationToken);
         return id;
     }
 
@@ -30,7 +30,7 @@ public class UserService : IUserService
                     from public.app_user 
                     where username=@loginId";
 
-        var user = await _dbService.GetAsync<AppUser>(sql1, new { loginId });
+        var user = await _dbService.GetAsync<AppUser>(sql1, new { loginId }, cancellationToken);
 
         if (user is null)
             return null;
@@ -52,7 +52,7 @@ public class UserService : IUserService
                 ON ur.app_role_id = r.id
             WHERE ur.app_user_id = @Id;";
 
-        var userRoles = await _dbService.GetList<AppUserRole>(sql2, new { userDTO.Id });
+        var userRoles = await _dbService.GetListAsync<AppUserRole>(sql2, new { userDTO.Id }, cancellationToken);
 
         if (userRoles?.Count > 0)
         {
@@ -70,7 +70,7 @@ public class UserService : IUserService
         return userDTO;
     }
 
-    public async Task<Result> AddRolesAsync(int userId, IReadOnlyCollection<RoleEnum> roles)
+    public async Task<Result> AddRolesAsync(int userId, IReadOnlyCollection<RoleEnum> roles, CancellationToken cancellationToken = default)
     {
         if (userId <= 0)
         {
@@ -96,7 +96,7 @@ public class UserService : IUserService
                 RoleId = (int)r
             });
 
-        var rows = await _dbService.EditData(sql, parameters);
+        var rows = await _dbService.EditDataAsync(sql, parameters, cancellationToken);
 
         if (rows == 0)
         {

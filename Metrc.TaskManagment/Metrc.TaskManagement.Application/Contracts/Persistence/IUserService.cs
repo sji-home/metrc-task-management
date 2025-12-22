@@ -9,7 +9,7 @@ public interface IUserService
 {
     Task<UserDTO?> UserByLoginIdAsync(string loginId, CancellationToken cancellationToken = default);
 
-    Task<int> AddAsync(AppUser appUser);
+    Task<int> AddAsync(AppUser appUser, CancellationToken cancellationToken = default);
 
-    Task<Result> AddRolesAsync(int userId, IReadOnlyCollection<RoleEnum> roles);
+    Task<Result> AddRolesAsync(int userId, IReadOnlyCollection<RoleEnum> roles, CancellationToken cancellationToken = default);
 }
