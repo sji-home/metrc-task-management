@@ -74,11 +74,12 @@ public class WorkTaskService : IWorkTaskService
         var sql =
            """
            Update public.work_task 
-           SET status_id=@Status, assigned_user_id=@AssignedUserId, title=@Title, description=@Description 
+           SET status_id=@StatusId, assigned_user_id=@AssignedUserId, title=@Title, description=@Description 
            WHERE id=@Id
            """;
 
         var workTask = DTOToEntityMapper.ToEntity(updateWorkTaskDTO);
+        Console.WriteLine($"Id={workTask.Id}, StatusId={workTask.StatusId}, AssignedUserId={workTask.AssignedUserId}, Title={workTask.Title}");
 
         var rowsAffected =
             await _dbService.EditDataAsync(

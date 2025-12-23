@@ -1,5 +1,6 @@
 ﻿using Metrc.TaskManagement.Domain.DTOs;
 using Metrc.TaskManagement.Domain.Entities;
+using Metrc.TaskManagment.Domain.Enums;
 
 namespace Metrc.TaskManagement.Application.Profiles.Mappings;
 
@@ -9,7 +10,7 @@ public static class EntityToDTOMapper
         => new WorkTaskResponseDTO
         {
             Id = workTask.Id,
-            Status = workTask.Status,
+            Status = (WorkTaskStatusEnum)workTask.StatusId,
             Title = workTask.Title,
             Description = workTask.Description,
             AssignedUserId = workTask.AssignedUserId

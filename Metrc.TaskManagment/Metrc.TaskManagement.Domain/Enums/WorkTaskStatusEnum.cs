@@ -1,6 +1,6 @@
 ﻿namespace Metrc.TaskManagment.Domain.Enums;
 
-public enum WorkTaskStatusEnum
+public enum WorkTaskStatusEnum : int
 {
     Pending = 1,
     InProgress = 2,

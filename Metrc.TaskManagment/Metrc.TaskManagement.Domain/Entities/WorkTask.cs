@@ -7,7 +7,7 @@ public class WorkTask
 {
     public int Id { get; set; }
 
-    public required WorkTaskStatusEnum Status { get; set; }
+    public required int StatusId { get; set; }
 
     public int? AssignedUserId { get; set; }
 

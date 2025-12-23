@@ -8,7 +8,7 @@ public static class DTOToEntityMapper
     public static WorkTask ToEntity(this WorkTaskDTO workTaskDTO)
         => new WorkTask
         {
-            Status = workTaskDTO.Status,
+            StatusId = (int)workTaskDTO.Status,
             Title = workTaskDTO.Title,
             Description = workTaskDTO.Description,
             AssignedUserId = workTaskDTO.AssignedUserId
@@ -18,7 +18,7 @@ public static class DTOToEntityMapper
         => new WorkTask
         {
             Id = updateWorkTaskDTO.Id,
-            Status = updateWorkTaskDTO.Status,
+            StatusId = (int)updateWorkTaskDTO.Status,
             Title = updateWorkTaskDTO.Title,
             Description = updateWorkTaskDTO.Description,
             AssignedUserId = updateWorkTaskDTO.AssignedUserId
@@ -28,7 +28,7 @@ public static class DTOToEntityMapper
         => new WorkTask
         {
             Id = dto.Id,
-            Status = dto.Status,
+            StatusId = (int)dto.Status,
             Title = dto.Title,
             Description = dto.Description,
             AssignedUserId = dto.AssignedUserId

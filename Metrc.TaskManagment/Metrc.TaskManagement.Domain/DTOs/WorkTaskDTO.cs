@@ -1,11 +1,15 @@
 ﻿using Metrc.TaskManagment.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Metrc.TaskManagement.Domain.DTOs;
 
 public class WorkTaskDTO
 {
     public required WorkTaskStatusEnum Status { get; set; }
+
+    //[JsonIgnore]
+    //public int StatusId { get; set; }
 
     public int? AssignedUserId { get; set; }
 
